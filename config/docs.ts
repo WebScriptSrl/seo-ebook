@@ -3,7 +3,11 @@ import { DocsConfig } from "types";
 export const docsConfig: DocsConfig = {
   mainNav: [
     {
-      title: "Documentation",
+      title: "Home",
+      href: "/",
+    },
+    {
+      title: "Docs",
       href: "/docs",
     },
     {
@@ -13,56 +17,44 @@ export const docsConfig: DocsConfig = {
   ],
   sidebarNav: [
     {
-      title: "Getting Started",
+      title: "About",
       items: [
         {
-          title: "Introduction",
+          title: "Intro",
           href: "/docs",
         },
         {
-          title: "Installation",
-          href: "/docs/installation",
+          title: "Author",
+          href: "/docs/author",
         },
       ],
     },
     {
-      title: "Configuration",
+      title: "The SEO Book",
       items: [
         {
-          title: "Authentification",
-          href: "/docs/configuration/authentification",
+          title: "Preface",
+          href: "/docs/book/preface",
         },
         {
-          title: "Blog",
-          href: "/docs/configuration/blog",
+          title: "Expectations",
+          href: "/docs/book/expectations",
         },
         {
-          title: "Components",
-          href: "/docs/configuration/components",
+          title: "Content",
+          href: "/docs/book/content",
         },
         {
-          title: "Config files",
-          href: "/docs/configuration/config-files",
+          title: "SEO Tools",
+          href: "/docs/book/seo-tools",
         },
         {
-          title: "Database",
-          href: "/docs/configuration/database",
+          title: "Next Steps",
+          href: "/docs/book/next-steps",
         },
         {
-          title: "Email",
-          href: "/docs/configuration/email",
-        },
-        {
-          title: "Layouts",
-          href: "/docs/configuration/layouts",
-        },
-        {
-          title: "Markdown files",
-          href: "/docs/configuration/markdown-files",
-        },
-        {
-          title: "Subscriptions",
-          href: "/docs/configuration/subscriptions",
+          title: "Conclusion",
+          href: "/docs/book/conclusion",
         },
       ],
     },

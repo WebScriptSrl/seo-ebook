@@ -30,6 +30,8 @@ export function NavBar({ scroll = false }: NavBarProps) {
   const selectedLayout = useSelectedLayoutSegment();
   const documentation = selectedLayout === "docs";
 
+  const modal = siteConfig.modalSignIn;
+
   const configMap = {
     docs: docsConfig.mainNav,
   };
@@ -50,7 +52,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-1.5">
             <Icons.logo />
-            <span className="font-urban text-xl font-bold">
+            <span className="text-gradient_cyan-red font-urban text-xl font-bold">
               {siteConfig.name}
             </span>
           </Link>
@@ -64,9 +66,12 @@ export function NavBar({ scroll = false }: NavBarProps) {
                   prefetch={true}
                   className={cn(
                     "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
-                    item.href.startsWith(`/${selectedLayout}`)
+                    !selectedLayout && item.href === "/"
                       ? "text-foreground"
-                      : "text-foreground/60",
+                      : selectedLayout &&
+                          item.href.startsWith(`/${selectedLayout}`)
+                        ? "text-foreground"
+                        : "text-foreground/60",
                     item.disabled && "cursor-not-allowed opacity-80",
                   )}
                 >
@@ -89,12 +94,12 @@ export function NavBar({ scroll = false }: NavBarProps) {
               </div>
               <div className="flex space-x-4">
                 <Link
-                  href={siteConfig.links.github}
+                  href={siteConfig.links.twitter}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Icons.gitHub className="size-7" />
-                  <span className="sr-only">GitHub</span>
+                  <Icons.twitter className="mx-2 size-5" />
+                  <span className="sr-only">Twitter</span>
                 </Link>
               </div>
             </div>
@@ -115,16 +120,33 @@ export function NavBar({ scroll = false }: NavBarProps) {
               </Button>
             </Link>
           ) : status === "unauthenticated" ? (
-            <Button
-              className="hidden gap-2 px-5 md:flex"
-              variant="default"
-              size="sm"
-              rounded="full"
-              onClick={() => setShowSignInModal(true)}
-            >
-              <span>Sign In</span>
-              <Icons.arrowRight className="size-4" />
-            </Button>
+            // Sign In modal with Google - Quick Sign In on large screens
+            <div>
+              {modal ? (
+                <Button
+                  className="hidden gap-2 px-5 md:flex"
+                  variant="default"
+                  size="sm"
+                  rounded="full"
+                  onClick={() => setShowSignInModal(true)}
+                >
+                  <span>Sign In</span>
+                  <Icons.arrowRight className="size-4" />
+                </Button>
+              ) : (
+                <Link href="/login">
+                  <Button
+                    className="hidden gap-2 px-5 md:flex"
+                    variant="default"
+                    size="sm"
+                    rounded="full"
+                  >
+                    <span>Sign In</span>
+                    <Icons.arrowRight className="size-4" />
+                  </Button>
+                </Link>
+              )}
+            </div>
           ) : (
             <Skeleton className="hidden h-9 w-28 rounded-full lg:flex" />
           )}

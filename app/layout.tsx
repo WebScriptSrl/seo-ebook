@@ -4,9 +4,12 @@ import { fontGeist, fontHeading, fontSans, fontUrban } from "@/assets/fonts";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 
+import { IS_GTM_ENABLED } from "@/config/tracking";
 import { cn, constructMetadata } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@/components/analytics";
+import { GoogleTagManager } from "@/components/gt-manager";
+import ConsentProvider from "@/components/modals/consent-provider";
 import ModalProvider from "@/components/modals/providers";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 
@@ -29,6 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontGeist.variable,
         )}
       >
+        {IS_GTM_ENABLED && <GoogleTagManager />}
         <SessionProvider>
           <ThemeProvider
             attribute="class"
@@ -36,10 +40,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
             enableSystem
             disableTransitionOnChange
           >
-            <ModalProvider>{children}</ModalProvider>
+            <ConsentProvider>
+              <ModalProvider>{children}</ModalProvider>
+            </ConsentProvider>
             <Analytics />
-            <Toaster richColors closeButton />
             <TailwindIndicator />
+            <Toaster richColors closeButton />
           </ThemeProvider>
         </SessionProvider>
       </body>

@@ -1,8 +1,11 @@
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -11,16 +14,25 @@ export function UpgradeCard() {
   return (
     <Card className="md:max-xl:rounded-none md:max-xl:border-none md:max-xl:shadow-none">
       <CardHeader className="md:max-xl:px-4">
-        <CardTitle>Upgrade to Pro</CardTitle>
+        <CardTitle className="text-gradient_cyan-red">
+          eBooks Discount
+        </CardTitle>
         <CardDescription>
-          Unlock all features and get unlimited access to our support team.
+          Get <span className="text-primary">38% off on all eBooks</span> for a
+          limited time only. Upgrade your SEO skills
         </CardDescription>
       </CardHeader>
-      <CardContent className="md:max-xl:px-4">
-        <Button size="sm" className="w-full">
-          Upgrade
-        </Button>
-      </CardContent>
+      <CardFooter className="md:max-xl:px-4">
+        <Link
+          href="/pricing"
+          className={cn(
+            buttonVariants({ variant: "default", size: "sm" }),
+            "w-full",
+          )}
+        >
+          Buy Now
+        </Link>
+      </CardFooter>
     </Card>
   );
 }

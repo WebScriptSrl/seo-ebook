@@ -1,18 +1,13 @@
-import { MagicLinkEmail } from "@/emails/magic-link-email";
+import MagicLinkEmail from "@/emails/magic-link-email";
 import { EmailConfig } from "next-auth/providers/email";
-import { Resend } from "resend";
 
-import { env } from "@/env.mjs";
 import { siteConfig } from "@/config/site";
-
-import { getUserByEmail } from "./user";
-
-export const resend = new Resend(env.RESEND_API_KEY);
+import { resend } from "@/lib/resend";
+import { getUserByEmail } from "@/lib/user";
 
 export const sendVerificationRequest: EmailConfig["sendVerificationRequest"] =
   async ({ identifier, url, provider }) => {
     const user = await getUserByEmail(identifier);
-    if (!user || !user.name) return;
 
     const userVerified = user?.emailVerified ? true : false;
     const authSubject = userVerified
@@ -32,6 +27,7 @@ export const sendVerificationRequest: EmailConfig["sendVerificationRequest"] =
           actionUrl: url,
           mailType: userVerified ? "login" : "register",
           siteName: siteConfig.name,
+          baseUrl: siteConfig.url,
         }),
         // Set this to prevent Gmail from threading emails.
         // More info: https://resend.com/changelog/custom-email-headers
@@ -44,7 +40,7 @@ export const sendVerificationRequest: EmailConfig["sendVerificationRequest"] =
         throw new Error(error?.message);
       }
 
-      // console.log(data)
+      // console.log(data);
     } catch (error) {
       throw new Error("Failed to send verification email.");
     }

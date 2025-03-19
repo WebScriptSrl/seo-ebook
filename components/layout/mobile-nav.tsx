@@ -47,9 +47,9 @@ export function NavMobile() {
         )}
       >
         {open ? (
-          <X className="size-5 text-muted-foreground" />
+          <X className="size-6 text-muted-foreground" />
         ) : (
-          <Menu className="size-5 text-muted-foreground" />
+          <Menu className="size-6 text-muted-foreground" />
         )}
       </button>
 
@@ -60,17 +60,27 @@ export function NavMobile() {
         )}
       >
         <ul className="grid divide-y divide-muted">
-          {links && links.length > 0 && links.map(({ title, href }) => (
-            <li key={href} className="py-3">
-              <Link
-                href={href}
-                onClick={() => setOpen(false)}
-                className="flex w-full font-medium capitalize"
-              >
-                {title}
-              </Link>
-            </li>
-          ))}
+          {links &&
+            links.length > 0 &&
+            links.map(({ title, href }) => (
+              <li key={href} className="py-3">
+                <Link
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "flex w-full font-medium transition-colors hover:text-foreground/80 sm:text-sm",
+                    !selectedLayout && href === "/"
+                      ? "text-foreground"
+                      : selectedLayout && href.startsWith(`/${selectedLayout}`)
+                        ? "text-foreground"
+                        : "text-foreground/60",
+                    !href && "cursor-not-allowed opacity-80",
+                  )}
+                >
+                  {title}
+                </Link>
+              </li>
+            ))}
 
           {session ? (
             <>
@@ -128,9 +138,13 @@ export function NavMobile() {
         ) : null}
 
         <div className="mt-5 flex items-center justify-end space-x-4">
-          <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
-            <Icons.gitHub className="size-6" />
-            <span className="sr-only">GitHub</span>
+          <Link
+            href={siteConfig.links.twitter}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icons.twitter className="size-5" />
+            <span className="sr-only">Twitter</span>
           </Link>
           <ModeToggle />
         </div>

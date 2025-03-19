@@ -1,14 +1,20 @@
+"use client";
+
 import * as React from "react";
+import { useContext } from "react";
 import Link from "next/link";
 
 import { footerLinks, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { NewsletterForm } from "@/components/forms/newsletter-form";
 import { ModeToggle } from "@/components/layout/mode-toggle";
-
-import { NewsletterForm } from "../forms/newsletter-form";
-import { Icons } from "../shared/icons";
+import { ConsentContext } from "@/components/modals/consent-provider";
+import { Icons } from "@/components/shared/icons";
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
+  const { setShowCookiesPreferencesModal } = useContext(ConsentContext);
+
   return (
     <footer className={cn("border-t", className)}>
       <div className="container grid max-w-6xl grid-cols-2 gap-6 py-14 md:grid-cols-5">
@@ -22,6 +28,8 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
                 <li key={link.title}>
                   <Link
                     href={link.href}
+                    target={link.href.includes("https") ? "_blank" : undefined}
+                    rel="noreferrer"
                     className="text-sm text-muted-foreground hover:text-primary"
                   >
                     {link.title}
@@ -37,50 +45,52 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
       </div>
 
       <div className="border-t py-4">
-        <div className="container flex max-w-6xl items-center justify-between">
-          {/* <span className="text-muted-foreground text-sm">
-            Copyright &copy; 2024. All rights reserved.
-          </span> */}
+        <div className="container flex max-w-6xl flex-col-reverse items-center justify-between gap-2 md:flex-row">
+          <span className="text-sm text-muted-foreground">
+            Copyright &copy; {new Date().getFullYear()}. All rights reserved.
+          </span>
           <p className="text-left text-sm text-muted-foreground">
-            Built by{" "}
+            Powered by{" "}
+            <Link
+              href={siteConfig.links.webscript}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4"
+            >
+              WebScript
+            </Link>{" "}
+            for{" "}
             <Link
               href={siteConfig.links.twitter}
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
             >
-              mickasmt
-            </Link>
-            . Hosted on{" "}
-            <Link
-              href="https://vercel.com"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              Vercel
-            </Link>
-            . Illustrations by{" "}
-            <Link
-              href="https://popsy.co"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              Popsy
+              SEO.eBook
             </Link>
           </p>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 self-end">
             <Link
-              href={siteConfig.links.github}
+              href={siteConfig.links.twitter}
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
             >
-              <Icons.gitHub className="size-5" />
+              <Icons.twitter className="size-5" />
             </Link>
             <ModeToggle />
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setShowCookiesPreferencesModal(true);
+              }}
+              className="size-8 px-0"
+            >
+              <Icons.settings className="size-5" />
+            </Button>
           </div>
         </div>
       </div>

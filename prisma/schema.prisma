@@ -15,6 +15,19 @@ enum UserRole {
   USER
 }
 
+enum ReviewState {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NewsletterState {
+  NEW
+  PENDING
+  CONFIRMED
+  UNSUBSCRIBED
+}
+
 model Account {
   id                String   @id @default(cuid())
   userId            String
@@ -58,17 +71,31 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
   role          UserRole  @default(USER)
+  active        Boolean   @default(true)
+  customerId    String?
 
-  accounts Account[]
-  sessions Session[]
+  emails    Email[]
+
+  accounts  Account[]
+  sessions  Session[]
+  reviews   Review[]
+  orders    Order[]
+  downloads Download[]
+
+  newsletterSubscriptions NewsletterSubscription[]
+
+  customer  Customer?
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+  stripeProductId        String?   @map(name: "stripe_product_id")
+  stripePaymentIntentId  String?   @map(name: "stripe_payment_intent_id")
 
   @@map(name: "users")
 }
+
 
 model VerificationToken {
   identifier String
@@ -77,4 +104,246 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map(name: "verification_tokens")
+}
+
+model BannedUser {
+  id        String   @id @default(cuid())
+  userId    String
+  email     String   @unique
+  reason    String?
+
+  bannedAt  DateTime @default(now()) @map(name: "banned_at")
+
+  @@map(name: "banned_users")
+}
+
+model DeletedUsers {
+  id        String   @id @default(cuid())
+  userId    String
+  reason    String?
+  email     String   
+
+  emails    Email[]
+
+  deletedAt DateTime @default(now()) @map(name: "deleted_at")
+
+  @@map(name: "deleted_users")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String?
+  job       String
+  location  String
+  productName String
+  approved  ReviewState @default(PENDING)
+  productId String?
+  rating    Int
+  comment   String?
+  reply     String?
+  replyAt   DateTime?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  user      User? @relation(fields: [userId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id])
+
+  @@map(name: "reviews")
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  title       String    @unique 
+  slug        String?   @unique
+  name        String    @unique
+  description String
+
+  key         String    @unique
+
+  price       Float
+  discount    Float?
+  tax         Float?
+  shipping    Float?
+  currency    String?
+  image       String?
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime  @default(now()) @map(name: "updated_at") 
+
+  stripePriceId String? @unique @map(name: "stripe_price_id")
+  stripeProductId String? @unique @map(name: "stripe_product_id")
+  
+  stripeCouponId String?         @map(name: "stripe_coupon_id")
+  stripePromoCode String?        @map(name: "stripe_promo_code")
+  stripePromoCodeExpires DateTime? @map(name: "stripe_promo_code_expires")
+
+  reviews     Review[]
+  orders      Order[]
+  downloads   Download[]
+
+  @@map(name: "products")
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  userId    String?   @unique
+  downloadId String?
+  
+  email     String?    @unique
+  name      String?
+  phone     String?
+  addressOne String?
+  addressTwo String?
+  city      String?
+  state     String?
+  zip       String?
+  country   String?
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripePriceId          String?   @map(name: "stripe_price_id")
+  stripeProductId        String?   @map(name: "stripe_product_id")
+  stripePaymentIntentId  String?   @map(name: "stripe_payment_intent_id")
+
+  user      User?     @relation(fields: [userId], references: [id])
+  orders    Order[]   
+  downloads Download[]
+
+  @@index([userId])
+
+  @@map(name: "customers")
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  sessionId   String   @unique
+
+  userId      String?
+  productId   String?
+  quantity    Int
+  total       Float
+  downloadId  String?
+
+  customerId   String?
+  email        String?
+  status       String
+
+  productPrice Float
+  productName  String?
+  tax          Float?
+  shipping     Float?
+  discount     Float?
+  discountCode String?
+  currency     String?
+
+  paymentIntentId String?   @unique @map(name: "payment_intent_id")
+  paymentMethodId String?
+  paymentMethodType String?
+  paymentStatus String?
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  hostedInvoiceUrl String? @map(name: "hosted_invoice_url")
+  invoicePdf String? @map(name: "invoice_pdf")
+  receiptUrl String? @map(name: "receipt_url")
+
+  downloads Download[]
+  emails    Email[]
+  customer  Customer?  @relation(fields: [customerId], references: [stripeCustomerId])
+
+  user      User? @relation(fields: [userId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id])
+
+  @@map(name: "orders")
+}
+
+model Download {
+  id          String   @id @default(cuid())
+  userId      String?
+  productId   String?
+  customerId  String?
+  orderId     String?   @unique
+  sessionId   String?   @unique
+
+  key         String   
+
+  url         String?
+  expires     DateTime?
+  used        Boolean  @default(false)
+  activated   DateTime?
+  ip          String?
+
+  location    String?
+  downloadCount Int @default(0)
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  user      User? @relation(fields: [userId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id])
+  order     Order? @relation(fields: [orderId], references: [id])
+  customer  Customer? @relation(fields: [customerId], references: [id])
+
+  @@index([userId])
+  @@index([productId])
+
+
+  @@map(name: "downloads")
+}
+
+model NewsletterSubscription {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  userId          String?
+  subscribed      NewsletterState  @default(NEW)
+  confirmedAt     DateTime?
+  renewed         Boolean  @default(false)
+  renewedAt       DateTime?
+  unsubscribed    Boolean  @default(false)
+  unsubscribedAt  DateTime?
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @default(now()) @map(name: "updated_at")
+
+  emails          Email[]
+
+  unsubscribeToken String? @unique @map(name: "unsubscribe_token")
+  validationToken  String? @unique @map(name: "validation_token")
+
+  unsubscribeTokenExpires DateTime? @map(name: "unsubscribe_token_expires")
+  validationTokenExpires  DateTime? @map(name: "validation_token_expires")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map(name: "newsletter_subscriptions")
+}
+
+model Email {
+  id              String    @id @default(cuid())
+  emails          String[]
+  newsletterSubscriptionId  String?
+  type            String
+  emailId         String?   @unique
+  userId          String?
+  orderId         String?
+  deletedUserId   String?
+  subject         String
+  body            Json?
+  delivered       Boolean?  @default(false)
+  sentAt          DateTime?
+  deliveredAt     DateTime?
+  openedAt        DateTime?
+  clickedAt       DateTime?
+  complainedAt    DateTime?
+  bouncedAt       DateTime?
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @default(now()) @map(name: "updated_at")
+
+  newsletterSubscription NewsletterSubscription? @relation(fields: [newsletterSubscriptionId], references: [id])
+
+  user User? @relation(fields: [userId], references: [id])
+  order Order? @relation(fields: [orderId], references: [id])
+  deletedUser DeletedUsers? @relation(fields: [deletedUserId], references: [id])
+
+  @@map(name: "emails")
 }

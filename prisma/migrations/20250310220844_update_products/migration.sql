@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "products" ADD COLUMN     "discount" DOUBLE PRECISION,
+ADD COLUMN     "shipping" DOUBLE PRECISION,
+ADD COLUMN     "tax" DOUBLE PRECISION;

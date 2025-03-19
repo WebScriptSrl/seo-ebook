@@ -5,6 +5,7 @@ import Link from "next/link";
 import { UserSubscriptionPlan } from "@/types";
 
 import { SubscriptionPlan } from "@/types/index";
+import { siteConfig } from "@/config/site";
 import { pricingData } from "@/config/subscriptions";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -152,14 +153,14 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
           >
             <ToggleGroupItem
               value="yearly"
-              className="rounded-full px-5 data-[state=on]:!bg-primary data-[state=on]:!text-primary-foreground"
+              className="rounded-full px-5 data-[state=on]:pointer-events-none data-[state=on]:!bg-primary data-[state=on]:!text-primary-foreground"
               aria-label="Toggle yearly billing"
             >
               Yearly (-20%)
             </ToggleGroupItem>
             <ToggleGroupItem
               value="monthly"
-              className="rounded-full px-5 data-[state=on]:!bg-primary data-[state=on]:!text-primary-foreground"
+              className="rounded-full px-5 data-[state=on]:pointer-events-none data-[state=on]:!bg-primary data-[state=on]:!text-primary-foreground"
               aria-label="Toggle monthly billing"
             >
               Monthly
@@ -177,15 +178,13 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
           Email{" "}
           <a
             className="font-medium text-primary hover:underline"
-            href="mailto:support@saas-starter.com"
+            href={`mailto:${siteConfig.mailSupport}`}
           >
-            support@saas-starter.com
+            {siteConfig.mailSupport}
           </a>{" "}
-          for to contact our support team.
+          to contact our support team.
           <br />
-          <strong>
-            You can test the subscriptions and won&apos;t be charged.
-          </strong>
+          <strong>Encountering issues? Contact us!</strong>
         </p>
       </section>
     </MaxWidthWrapper>

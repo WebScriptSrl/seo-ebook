@@ -1,16 +1,37 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { NewsletterSubscriptionData } from "@/actions/newsletter-subscription";
+
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import { SectionColumns } from "@/components/dashboard/section-columns";
 import { useDeleteAccountModal } from "@/components/modals/delete-account-modal";
 import { Icons } from "@/components/shared/icons";
 
-export function DeleteAccountSection() {
+interface NewsletterFormProps {
+  data: NewsletterSubscriptionData;
+}
+
+export function DeleteAccountSection({
+  status,
+  newsletterData,
+}: {
+  status: number;
+  newsletterData: NewsletterFormProps;
+}) {
   const { setShowDeleteAccountModal, DeleteAccountModal } =
     useDeleteAccountModal();
 
-  const userPaidPlan = true;
+  const [newsletterSubscription, setNewsletterSubscription] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (status === 404 || status === 500) return;
+    if (newsletterData.data.subscribed !== "UNSUBSCRIBED") {
+      setNewsletterSubscription(true);
+    }
+  }, [newsletterData, status]);
 
   return (
     <>
@@ -24,19 +45,21 @@ export function DeleteAccountSection() {
             <div className="flex items-center gap-2">
               <span className="text-[15px] font-medium">Are you sure ?</span>
 
-              {userPaidPlan ? (
+              {newsletterSubscription ? (
                 <div className="flex items-center gap-1 rounded-md bg-red-600/10 p-1 pr-2 text-xs font-medium text-red-600 dark:bg-red-500/10 dark:text-red-500">
                   <div className="m-0.5 rounded-full bg-red-600 p-[3px]">
                     <Icons.close size={10} className="text-background" />
                   </div>
-                  Active Subscription
+                  Active Newsletter
                 </div>
               ) : null}
             </div>
             <div className="text-balance text-sm text-muted-foreground">
               Permanently delete your {siteConfig.name} account
-              {userPaidPlan ? " and your subscription" : ""}. This action cannot
-              be undone - please proceed with caution.
+              {newsletterSubscription
+                ? " and your newsletter subscription"
+                : ""}
+              . Please proceed with caution.
             </div>
           </div>
           <div className="flex items-center gap-2">

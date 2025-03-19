@@ -13,6 +13,38 @@ export const DELETE = auth(async (req) => {
   }
 
   try {
+    if (currentUser.id && currentUser.email) {
+      await prisma.deletedUsers.create({
+        data: {
+          userId: currentUser.id,
+          reason: "User requested account deletion",
+          email: currentUser.email,
+        },
+      });
+
+      const newsletterSubscription =
+        await prisma.newsletterSubscription.findFirst({
+          where: {
+            email: currentUser.email,
+          },
+        });
+
+      if (newsletterSubscription) {
+        await prisma.newsletterSubscription.update({
+          where: {
+            id: newsletterSubscription.id,
+          },
+          data: {
+            subscribed: "UNSUBSCRIBED",
+            unsubscribed: true,
+            unsubscribedAt: new Date(),
+            unsubscribeToken: null,
+            unsubscribeTokenExpires: null,
+          },
+        });
+      }
+    }
+
     await prisma.user.delete({
       where: {
         id: currentUser.id,

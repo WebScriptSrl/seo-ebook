@@ -1,6 +1,18 @@
 import { PlansRow, SubscriptionPlan } from "types";
 import { env } from "@/env.mjs";
 
+// Subscription plans
+const prices = {
+  pro: {
+    monthly: 15,
+    yearly: 120,
+  },
+  business: {
+    monthly: 30,
+    yearly: 300,
+  },
+};
+
 export const pricingData: SubscriptionPlan[] = [
   {
     title: "Starter",
@@ -40,8 +52,8 @@ export const pricingData: SubscriptionPlan[] = [
       "Limited access to business resources.",
     ],
     prices: {
-      monthly: 15,
-      yearly: 144,
+      monthly: Number(prices.pro.monthly.toFixed(2)),
+      yearly: Number(prices.pro.yearly.toFixed(2)),
     },
     stripeIds: {
       monthly: env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID,
@@ -60,8 +72,8 @@ export const pricingData: SubscriptionPlan[] = [
     ],
     limitations: [],
     prices: {
-      monthly: 30,
-      yearly: 300,
+      monthly: Number(prices.business.monthly.toFixed(2)),
+      yearly: Number(prices.business.yearly.toFixed(2)),
     },
     stripeIds: {
       monthly: env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_ID,

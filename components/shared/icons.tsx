@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Copy,
   CreditCard,
+  Edit2,
   File,
   FileText,
   HelpCircle,
@@ -15,6 +16,7 @@ import {
   Image,
   Laptop,
   LayoutPanelLeft,
+  LibraryBigIcon,
   LineChart,
   Loader2,
   LucideIcon,
@@ -27,6 +29,7 @@ import {
   Puzzle,
   Search,
   Settings,
+  Star,
   SunMedium,
   Trash,
   User,
@@ -48,6 +51,7 @@ export const Icons = {
   copy: Copy,
   dashboard: LayoutPanelLeft,
   ellipsis: MoreVertical,
+  edit: Edit2,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
@@ -103,7 +107,7 @@ export const Icons = {
   home: Home,
   laptop: Laptop,
   lineChart: LineChart,
-  logo: Puzzle,
+  logo: LibraryBigIcon,
   media: Image,
   messages: MessagesSquare,
   moon: Moon,
@@ -115,6 +119,8 @@ export const Icons = {
   spinner: Loader2,
   sun: SunMedium,
   trash: Trash,
+  puzzle: Puzzle,
+  star: Star,
   twitter: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

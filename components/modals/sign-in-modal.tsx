@@ -1,4 +1,3 @@
-import { signIn } from "next-auth/react";
 import {
   Dispatch,
   SetStateAction,
@@ -6,11 +5,12 @@ import {
   useMemo,
   useState,
 } from "react";
+import { signIn } from "next-auth/react";
 
-import { Icons } from "@/components/shared/icons";
+import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import { siteConfig } from "@/config/site";
+import { Icons } from "@/components/shared/icons";
 
 function SignInModal({
   showSignInModal,
@@ -22,7 +22,11 @@ function SignInModal({
   const [signInClicked, setSignInClicked] = useState(false);
 
   return (
-    <Modal showModal={showSignInModal} setShowModal={setShowSignInModal}>
+    <Modal
+      showModal={showSignInModal}
+      setShowModal={setShowSignInModal}
+      type="signin"
+    >
       <div className="w-full">
         <div className="flex flex-col items-center justify-center space-y-3 border-b bg-background px-4 py-6 pt-8 text-center md:px-16">
           <a href={siteConfig.url}>

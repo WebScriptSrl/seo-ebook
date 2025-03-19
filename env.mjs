@@ -11,10 +11,13 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     GITHUB_OAUTH_TOKEN: z.string().min(1),
     DATABASE_URL: z.string().min(1),
-    RESEND_API_KEY: z.string().min(1),
+    AUTH_RESEND_KEY: z.string().min(1),
     EMAIL_FROM: z.string().min(1),
     STRIPE_API_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
+    NEXT_PUBLIC_GTM_ID: z.string().optional(),
+    JWT_SECRET: z.string().min(5),
+    RESEND_WEBHOOK_SECRET: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),
@@ -22,6 +25,10 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID: z.string().min(1),
     NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_ID: z.string().min(1),
     NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_ID: z.string().min(1),
+    NEXT_PUBLIC_STRIPE_LOCAL_SEO_EBOOK_PRICE_ID: z.string().min(1),
+    NEXT_PUBLIC_STRIPE_LOCAL_SEO_EPUB_PRICE_ID: z.string().min(1),
+    NEXT_PUBLIC_STRIPE_LOCAL_SEO_PRINT_READY_PRICE_ID: z.string().min(1),
+    NEXT_PUBLIC_GTM_ID: z.string().optional(),
   },
   runtimeEnv: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -30,12 +37,18 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GITHUB_OAUTH_TOKEN: process.env.GITHUB_OAUTH_TOKEN,
     DATABASE_URL: process.env.DATABASE_URL,
-    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    AUTH_RESEND_KEY: process.env.AUTH_RESEND_KEY,
+    RESEND_WEBHOOK_SECRET: process.env.RESEND_WEBHOOK_SECRET,
     EMAIL_FROM: process.env.EMAIL_FROM,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
+    JWT_SECRET: process.env.JWT_SECRET,
+
     // Stripe
     STRIPE_API_KEY: process.env.STRIPE_API_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    NEXT_PUBLIC_STRIPE_PROMO_CODE: process.env.NEXT_PUBLIC_STRIPE_PROMO_CODE,
+
     NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID:
       process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID,
     NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID:
@@ -44,5 +57,23 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PLAN_ID,
     NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_ID:
       process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PLAN_ID,
+    NEXT_PUBLIC_STRIPE_LOCAL_SEO_EBOOK_PRICE_ID:
+      process.env.NEXT_PUBLIC_STRIPE_LOCAL_SEO_EBOOK_PRICE_ID,
+    NEXT_PUBLIC_STRIPE_LOCAL_SEO_EPUB_PRICE_ID:
+      process.env.NEXT_PUBLIC_STRIPE_LOCAL_SEO_EPUB_PRICE_ID,
+    NEXT_PUBLIC_STRIPE_LOCAL_SEO_PRINT_READY_PRICE_ID:
+      process.env.NEXT_PUBLIC_STRIPE_LOCAL_SEO_PRINT_READY_PRICE_ID,
+
+    // AWS
+    AWS_REGION: process.env.AWS_REGION,
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+    AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
+    NEXT_PUBLIC_LOCAL_SEO_EBOOK_BASE_KEY:
+      process.env.NEXT_PUBLIC_LOCAL_SEO_EBOOK_BASE_KEY,
+    NEXT_PUBLIC_LOCAL_SEO_EPUB_KEY: process.env.NEXT_PUBLIC_LOCAL_SEO_EPUB_KEY,
+    NEXT_PUBLIC_LOCAL_SEO_PDF_KEY: process.env.NEXT_PUBLIC_LOCAL_SEO_PDF_KEY,
+    NEXT_PUBLIC_LOCAL_SEO_PRINT_READY_KEY:
+      process.env.NEXT_PUBLIC_LOCAL_SEO_PRINT_READY_KEY,
   },
 });

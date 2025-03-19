@@ -124,7 +124,10 @@ export function UserRoleForm({ user }: UserNameFormProps) {
           </div>
           <div className="flex flex-col justify-between p-1">
             <p className="text-[13px] text-muted-foreground">
-              Remove this field on real production
+              Your current role is <strong>{user.role}</strong>.
+            </p>
+            <p className="text-[13px] text-muted-foreground">
+              This will be updated to create new admin users.
             </p>
           </div>
         </SectionColumns>

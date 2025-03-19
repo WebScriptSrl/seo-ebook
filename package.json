@@ -1,23 +1,32 @@
 {
-  "name": "saas-starter",
-  "version": "0.3.1",
+  "name": "seo-ebook",
+  "version": "1.0.0",
   "private": true,
   "author": {
-    "name": "mickasmt",
-    "url": "https://twitter.com/mickasmt"
+    "name": "webscript",
+    "url": "https://webscript.ro/en"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3009",
     "build": "next build",
     "turbo": "next dev --turbo",
-    "start": "next start",
+    "start": "next start -p 3009",
     "lint": "next lint",
     "preview": "next build && next start",
     "postinstall": "prisma generate",
-    "email": "email dev --dir emails --port 3333"
+    "email": "email dev --dir emails --port 3333",
+    "email:build": "email build --dir emails",
+    "email:watch": "email watch --dir emails",
+    "email:serve": "email serve --dir emails",
+    "seed": "prisma db seed"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",
+    "@aws-sdk/client-s3": "^3.750.0",
+    "@aws-sdk/s3-request-presigner": "^3.750.0",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.17.0",
     "@radix-ui/react-accessible-icon": "^1.1.0",
@@ -48,10 +57,13 @@
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
+    "@radix-ui/react-visually-hidden": "^1.1.2",
     "@react-email/button": "0.0.15",
     "@react-email/components": "0.0.21",
     "@react-email/html": "0.0.8",
     "@t3-oss/env-nextjs": "^0.11.0",
+    "@types/js-cookie": "^3.0.6",
+    "@types/jsonwebtoken": "^9.0.9",
     "@typescript-eslint/parser": "^7.17.0",
     "@vercel/analytics": "^1.3.1",
     "@vercel/og": "^0.6.2",
@@ -61,6 +73,8 @@
     "concurrently": "^8.2.2",
     "contentlayer2": "^0.5.0",
     "date-fns": "^3.6.0",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.414.0",
     "ms": "^2.1.3",
     "next": "14.2.5",
@@ -69,6 +83,7 @@
     "next-themes": "^0.3.0",
     "prop-types": "^15.8.1",
     "react": "18.3.1",
+    "react-cookie-consent": "^9.0.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "18.3.1",
     "react-email": "2.1.5",
@@ -80,6 +95,7 @@
     "shiki": "^1.11.0",
     "sonner": "^1.5.0",
     "stripe": "^15.12.0",
+    "svix": "^1.61.3",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.1",
@@ -116,5 +132,6 @@
     "tailwindcss": "^3.4.6",
     "typescript": "5.5.3",
     "unist-util-visit": "^5.0.0"
-  }
+  },
+  "packageManager": "pnpm@10.4.0+sha512.6b849d0787d97f8f4e1f03a9b8ff8f038e79e153d6f11ae539ae7c435ff9e796df6a862c991502695c7f9e8fac8aeafc1ac5a8dab47e36148d183832d886dd52"
 }

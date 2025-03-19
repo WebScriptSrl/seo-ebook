@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { TooltipContent } from "@radix-ui/react-tooltip";
 import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 
@@ -13,6 +14,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+import { Icons } from "../shared/icons";
+import { Tooltip, TooltipTrigger } from "../ui/tooltip";
+
 type ProjectType = {
   title: string;
   slug: string;
@@ -21,14 +25,14 @@ type ProjectType = {
 
 const projects: ProjectType[] = [
   {
-    title: "Project 1",
-    slug: "project-number-one",
-    color: "bg-red-500",
+    title: "Sponsorships",
+    slug: "sponsorships",
+    color: "bg-green-500",
   },
   {
-    title: "Project 2",
-    slug: "project-number-two",
-    color: "bg-blue-500",
+    title: "Seo.eBook",
+    slug: "seo-ebook",
+    color: "bg-cyan-500",
   },
 ];
 const selected: ProjectType = projects[1];
@@ -48,38 +52,36 @@ export default function ProjectSwitcher({
   return (
     <div>
       <Popover open={openPopover} onOpenChange={setOpenPopover}>
-        <PopoverTrigger>
-          <Button
-            className="h-8 px-2"
-            variant={openPopover ? "secondary" : "ghost"}
-            onClick={() => setOpenPopover(!openPopover)}
-          >
-            <div className="flex items-center space-x-3 pr-2">
-              <div
-                className={cn(
-                  "size-3 shrink-0 rounded-full",
-                  selected.color,
-                )}
-              />
-              <div className="flex items-center space-x-3">
-                <span
-                  className={cn(
-                    "inline-block truncate text-sm font-medium xl:max-w-[120px]",
-                    large ? "w-full" : "max-w-[80px]",
-                  )}
-                >
-                  {selected.slug}
-                </span>
-              </div>
-            </div>
-            <ChevronsUpDown
-              className="size-4 text-muted-foreground"
-              aria-hidden="true"
+        <PopoverTrigger
+          className="flex h-8 items-center px-2"
+          onClick={() => setOpenPopover(!openPopover)}
+        >
+          <div className="flex items-center space-x-3 pr-2">
+            <div
+              className={cn("size-3 shrink-0 rounded-full", selected.color)}
             />
-          </Button>
+            <div className="flex items-center space-x-3">
+              <span
+                className={cn(
+                  "inline-block truncate text-sm font-medium xl:max-w-[120px]",
+                  large ? "w-full" : "max-w-[80px]",
+                  selected.slug === "sponsorships"
+                    ? ""
+                    : "text-gradient_cyan-red",
+                )}
+              >
+                {selected.title}
+              </span>
+            </div>
+          </div>
+          <ChevronsUpDown
+            className="size-4 text-muted-foreground"
+            aria-hidden="true"
+          />
         </PopoverTrigger>
         <PopoverContent align="start" className="max-w-60 p-2">
           <ProjectList
+            userRole={session && session.user.role ? session.user.role : ""}
             selected={selected}
             projects={projects}
             setOpenPopover={setOpenPopover}
@@ -91,10 +93,12 @@ export default function ProjectSwitcher({
 }
 
 function ProjectList({
+  userRole,
   selected,
   projects,
   setOpenPopover,
 }: {
+  userRole: string;
   selected: ProjectType;
   projects: ProjectType[];
   setOpenPopover: (open: boolean) => void;
@@ -121,23 +125,45 @@ function ProjectList({
           >
             {slug}
           </span>
-          {selected.slug === slug && (
+          {selected.slug === slug ? (
             <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-foreground">
               <Check size={18} aria-hidden="true" />
             </span>
+          ) : (
+            <Tooltip>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <TooltipTrigger
+                  asChild
+                  className="flex h-6 w-6 items-center justify-center rounded-full bg-muted"
+                >
+                  <Icons.help />
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  align="start"
+                  className="p-2 text-sm"
+                >
+                  🚧 Implementation in progress
+                </TooltipContent>
+              </div>
+            </Tooltip>
           )}
         </Link>
       ))}
-      <Button
-        variant="outline"
-        className="relative flex h-9 items-center justify-center gap-2 p-2"
-        onClick={() => {
-          setOpenPopover(false);
-        }}
-      >
-        <Plus size={18} className="absolute left-2.5 top-2" />
-        <span className="flex-1 truncate text-center">New Project</span>
-      </Button>
+
+      {userRole.toLowerCase() === "admin" && (
+        <Button
+          variant="outline"
+          className="relative flex h-9 items-center justify-center gap-2 p-2"
+          onClick={() => {
+            setOpenPopover(false);
+          }}
+          disabled
+        >
+          <Plus size={18} className="absolute left-2.5 top-2" />
+          <span className="flex-1 truncate text-center">New Project</span>
+        </Button>
+      )}
     </div>
   );
 }

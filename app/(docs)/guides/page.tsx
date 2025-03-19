@@ -2,14 +2,14 @@ import Link from "next/link";
 import { allGuides } from "contentlayer/generated";
 import { compareDesc } from "date-fns";
 
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { DocsPageHeader } from "@/components/docs/page-header";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 
 export const metadata = {
-  title: "Guides",
+  title: "SEO Guides",
   description:
-    "This section includes end-to-end guides for developing Next.js 13 apps.",
+    "Get the latest SEO guides to help you rank higher in search engines.",
 };
 
 export default function GuidesPage() {
@@ -22,8 +22,8 @@ export default function GuidesPage() {
   return (
     <MaxWidthWrapper className="py-6 lg:py-10">
       <DocsPageHeader
-        heading="Guides"
-        text="This section includes end-to-end guides for developing Next.js 13 apps."
+        heading="SEO Guides"
+        text="Get the latest SEO guides to help you rank higher in search engines."
       />
       {guides?.length ? (
         <div className="mt-5 grid gap-4 md:grid-cols-2 md:gap-6">
@@ -33,11 +33,16 @@ export default function GuidesPage() {
               className="group relative rounded-lg border p-6 shadow-md transition-shadow hover:shadow-lg"
             >
               {guide.featured && (
-                <span className="absolute right-4 top-4 rounded-full px-3 py-1 text-xs font-medium">
+                <span className="absolute right-4 top-4 rounded-full bg-purple-300/80 px-3 py-1 text-xs font-medium dark:bg-purple-600/50">
                   Featured
                 </span>
               )}
-              <div className="flex flex-col justify-between space-y-4">
+              <div
+                className={cn(
+                  "flex h-full flex-col justify-between space-y-4",
+                  guide.featured ? "pt-6" : "",
+                )}
+              >
                 <div className="space-y-2">
                   <h2 className="text-xl font-medium tracking-tight">
                     {guide.title}
@@ -59,7 +64,7 @@ export default function GuidesPage() {
           ))}
         </div>
       ) : (
-        <p>No guides published.</p>
+        <p>No guides published yet.</p>
       )}
     </MaxWidthWrapper>
   );

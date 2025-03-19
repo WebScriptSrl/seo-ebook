@@ -30,7 +30,7 @@ export function ComparePlans() {
         <table className="w-full table-fixed">
           <thead>
             <tr className="divide-x divide-border border">
-              <th className="sticky left-0 z-20 w-40 bg-accent p-5 md:w-1/4 lg:top-14"></th>
+              <th className="z-19 sticky left-0 w-40 bg-accent p-5 md:w-1/4 lg:top-14"></th>
               {plansColumns.map((col) => (
                 <th
                   key={col}

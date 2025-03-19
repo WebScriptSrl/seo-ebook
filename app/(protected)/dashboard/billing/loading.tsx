@@ -6,7 +6,7 @@ export default function DashboardBillingLoading() {
   return (
     <>
       <DashboardHeader
-        heading="Billing"
+        heading="Billing & Orders"
         text="Manage billing and your subscription plan."
       />
       <div className="grid gap-8">

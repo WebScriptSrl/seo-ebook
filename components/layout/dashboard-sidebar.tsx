@@ -3,16 +3,26 @@
 import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavItem, SidebarNavItem } from "@/types";
+import { SidebarNavItem } from "@/types";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Menu, PanelLeftClose, PanelRightClose } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { countOrders } from "@/lib/order";
+import { countProducts } from "@/lib/products";
+import { countReviews } from "@/lib/reviews";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   Tooltip,
   TooltipContent,
@@ -29,25 +39,30 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ links }: DashboardSidebarProps) {
   const path = usePathname();
+  const [ordersCount, setOrdersCount] = useState(0);
+  const [productsCount, setProductsCount] = useState(0);
+  const [reviewsCount, setReviewsCount] = useState(0);
 
-  // NOTE: Use this if you want save in local storage -- Credits: Hosna Qasmei
-  //
-  // const [isSidebarExpanded, setIsSidebarExpanded] = useState(() => {
-  //   if (typeof window !== "undefined") {
-  //     const saved = window.localStorage.getItem("sidebarExpanded");
-  //     return saved !== null ? JSON.parse(saved) : true;
-  //   }
-  //   return true;
-  // });
+  const countOrdersAction = async () => {
+    const res = await countOrders();
+    if (res) setOrdersCount(res);
+  };
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     window.localStorage.setItem(
-  //       "sidebarExpanded",
-  //       JSON.stringify(isSidebarExpanded),
-  //     );
-  //   }
-  // }, [isSidebarExpanded]);
+  const countProductsAction = async () => {
+    const res = await countProducts();
+    if (res) setProductsCount(res);
+  };
+
+  const getReviewsCount = async () => {
+    const res = await countReviews();
+    if (res) setReviewsCount(res);
+  };
+
+  useEffect(() => {
+    countOrdersAction();
+    countProductsAction();
+    getReviewsCount();
+  }, []);
 
   const { isTablet } = useMediaQuery();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(!isTablet);
@@ -128,9 +143,19 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                               >
                                 <Icon className="size-5" />
                                 {item.title}
-                                {item.badge && (
+                                {item.badge === "orders" && (
                                   <Badge className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full">
-                                    {item.badge}
+                                    {ordersCount}
+                                  </Badge>
+                                )}
+                                {item.badge === "products" && (
+                                  <Badge className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full">
+                                    {productsCount}
+                                  </Badge>
+                                )}
+                                {item.badge === "reviews" && (
+                                  <Badge className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full">
+                                    {reviewsCount}
                                   </Badge>
                                 )}
                               </Link>
@@ -198,6 +223,12 @@ export function MobileSheetSidebar({ links }: DashboardSidebarProps) {
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col p-0">
           <ScrollArea className="h-full overflow-y-auto">
+            <VisuallyHidden>
+              <SheetTitle> {siteConfig.name} user account menu</SheetTitle>
+              <SheetDescription>
+                {siteConfig.name} user account menu with navigation links
+              </SheetDescription>
+            </VisuallyHidden>
             <div className="flex h-screen flex-col">
               <nav className="flex flex-1 flex-col gap-y-8 p-6 text-lg font-medium">
                 <Link
