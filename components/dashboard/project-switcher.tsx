@@ -134,7 +134,7 @@ function ProjectList({
               <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                 <TooltipTrigger
                   asChild
-                  className="flex h-6 w-6 items-center justify-center rounded-full bg-muted"
+                  className="flex size-6 items-center justify-center rounded-full bg-muted"
                 >
                   <Icons.help />
                 </TooltipTrigger>
