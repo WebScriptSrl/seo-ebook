@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { UserProductOrder } from "@/types";
 
-import { getUserProductOrders } from "@/lib/order";
+import { getSellSession, getUserProductOrders } from "@/lib/order";
 import { getCurrentUser } from "@/lib/session";
 import { constructMetadata } from "@/lib/utils";
 import { CompareProducts } from "@/components/pricing/compare-products";
@@ -51,12 +51,15 @@ export default async function PricingPage() {
     productOrder = await getUserProductOrders(user.id);
   }
 
+  const sellSession = await getSellSession();
+
   return (
     <div className="flex w-full flex-col gap-16 py-8 md:py-8">
       <ProductPricingCards
         userId={user?.id}
         productOrder={productOrder}
         defaultOrderType="download"
+        sellSession={sellSession}
       />
       <hr className="container" />
       <CompareProducts />

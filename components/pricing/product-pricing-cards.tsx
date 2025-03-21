@@ -1,8 +1,9 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { ProductOrder, UserProductOrder } from "@/types";
+import { SellSession } from "@prisma/client";
 
 import { amazonProductData, directProductData } from "@/config/products";
 import { siteConfig } from "@/config/site";
@@ -16,25 +17,40 @@ import { Icons } from "@/components/shared/icons";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 
 import BlurImage from "../shared/blur-image";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 interface ProductPricingCardsProps {
   userId?: string;
   productOrder?: UserProductOrder;
   defaultOrderType: "download" | "amazon";
+  sellSession?: SellSession | null;
 }
 
 export function ProductPricingCards({
   //userId, // Not used for now
   productOrder,
   defaultOrderType,
+  sellSession,
 }: ProductPricingCardsProps) {
   const isDirectlyDefault = defaultOrderType === "download" ? true : false;
   const [isDirect, setIsDirect] = useState<boolean>(!!isDirectlyDefault);
   // const { setShowSignInModal } = useContext(ModalContext); // Not used for now
 
+  const [sellOpenData, setSellOpenData] = useState<SellSession | null>(null);
+  const [sellPaused, setSellPaused] = useState<boolean | undefined>(
+    sellSession?.sellStop,
+  );
+
   const toggleBilling = () => {
     setIsDirect(!isDirect);
   };
+
+  useEffect(() => {
+    if (sellSession) {
+      setSellOpenData(sellSession);
+      setSellPaused(sellSession.sellStop === true);
+    }
+  }, [sellSession]);
 
   const PricingCard = ({ offer }: { offer: ProductOrder }) => {
     return (
@@ -121,10 +137,39 @@ export function ProductPricingCards({
           </ul>
 
           {offer.type === "download" && offer.stripeId ? (
-            <ProductBillingFormButton
-              offer={offer}
-              productOrder={productOrder}
-            />
+            <>
+              {!sellPaused ? (
+                <ProductBillingFormButton
+                  offer={offer}
+                  productOrder={productOrder}
+                />
+              ) : (
+                <Alert variant="default" className="text-center">
+                  <Icons.info className="inline-block size-5" />
+                  {sellOpenData?.showBanner &&
+                  sellOpenData?.bannerTitle &&
+                  sellOpenData?.description ? (
+                    <div>
+                      <AlertTitle className="text-sm text-muted-foreground">
+                        {sellOpenData.bannerTitle}
+                      </AlertTitle>
+                      <AlertDescription className="text-xs text-muted-foreground">
+                        {sellOpenData.description}
+                      </AlertDescription>
+                    </div>
+                  ) : (
+                    <div>
+                      <AlertTitle className="text-sm text-muted-foreground">
+                        The sell session is paused.
+                      </AlertTitle>
+                      <AlertDescription className="text-xs text-muted-foreground">
+                        We are working on it! Please check back later.
+                      </AlertDescription>
+                    </div>
+                  )}
+                </Alert>
+              )}
+            </>
           ) : (
             <Link
               href={offer.amzUrl}

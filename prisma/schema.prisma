@@ -106,6 +106,18 @@ model VerificationToken {
   @@map(name: "verification_tokens")
 }
 
+model SellSession {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  
+  sellStop     Boolean  @default(false)
+  showBanner   Boolean  @default(false)
+  bannerTitle  String?
+  description  String?
+
+  @@map(name: "sell_sessions")
+}
+
 model BannedUser {
   id        String   @id @default(cuid())
   userId    String

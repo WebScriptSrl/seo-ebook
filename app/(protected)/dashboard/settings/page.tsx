@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation";
 import { getSubscription } from "@/actions/newsletter-subscription";
 
+import { getSellSession } from "@/lib/order";
 import { getCurrentUser } from "@/lib/session";
 import { constructMetadata } from "@/lib/utils";
 import { DeleteAccountSection } from "@/components/dashboard/delete-account";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { DashboardNewsletterForm } from "@/components/forms/dashboard-newsletter-form";
+import { SellSessionForm } from "@/components/forms/sell-stop-form";
 import { UserNameForm } from "@/components/forms/user-name-form";
 import { UserRoleForm } from "@/components/forms/user-role-form";
 
@@ -18,9 +20,15 @@ export default async function SettingsPage() {
   const user = await getCurrentUser();
 
   let newsletterSubscription;
+  let sellSession;
+
+  sellSession = await getSellSession();
 
   if (user && user.id && user.email) {
     newsletterSubscription = await getSubscription(user.email, "user");
+    if (user.role === "ADMIN") {
+      sellSession = await getSellSession();
+    }
   } else {
     redirect("/login");
   }
@@ -40,7 +48,10 @@ export default async function SettingsPage() {
           userMail={user.email}
         />
         {user.role === "ADMIN" && (
-          <UserRoleForm user={{ id: user.id, role: user.role }} />
+          <>
+            <SellSessionForm sellSession={sellSession} />
+            <UserRoleForm user={{ id: user.id, role: user.role }} />
+          </>
         )}
         <DeleteAccountSection
           status={newsletterSubscription.status}

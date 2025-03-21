@@ -64,6 +64,9 @@ export const Guide = defineDocumentType(() => ({
       type: "date",
       required: true,
     },
+    updated: {
+      type: "date",
+    },
     published: {
       type: "boolean",
       default: true,
@@ -91,6 +94,9 @@ export const Post = defineDocumentType(() => ({
     date: {
       type: "date",
       required: true,
+    },
+    updated: {
+      type: "date",
     },
     published: {
       type: "boolean",

@@ -339,3 +339,28 @@ export const countOrders = async () => {
     return null;
   }
 };
+
+export const getSellSession = async () => {
+  try {
+    const session = await prisma.sellSession.findFirst();
+
+    if (!session) {
+      const defaultSession = await prisma.sellSession.create({
+        data: {
+          name: "Sales",
+          sellStop: false,
+          showBanner: false,
+          bannerTitle: "",
+          description: "",
+        },
+      });
+
+      return defaultSession;
+    }
+
+    return session;
+  } catch (error) {
+    // console.error(error);
+    return null;
+  }
+};

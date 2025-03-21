@@ -67,11 +67,23 @@ export function BlogCard({
             ))}
           </div>
 
-          {data.date && (
-            <p className="text-sm text-muted-foreground">
-              {formatDate(data.date)}
-            </p>
-          )}
+          <div className="flex flex-col items-center space-x-3">
+            {data.date && (
+              <p
+                className={cn(
+                  "text-muted-foreground",
+                  data.updated ? "text-xs" : "text-sm",
+                )}
+              >
+                {formatDate(data.date)}
+              </p>
+            )}
+            {data.updated && (
+              <p className="text-xs italic text-muted-foreground">
+                Updated: {formatDate(data.updated)}
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <Link href={data.slug} className="absolute inset-0">

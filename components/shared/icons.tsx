@@ -14,6 +14,7 @@ import {
   HelpCircle,
   Home,
   Image,
+  Info,
   Laptop,
   LayoutPanelLeft,
   LibraryBigIcon,
@@ -52,6 +53,8 @@ export const Icons = {
   dashboard: LayoutPanelLeft,
   ellipsis: MoreVertical,
   edit: Edit2,
+  info: Info,
+
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
