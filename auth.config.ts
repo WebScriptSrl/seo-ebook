@@ -10,6 +10,7 @@ export default {
     Google({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
     Resend({
       apiKey: env.RESEND_API_KEY,
