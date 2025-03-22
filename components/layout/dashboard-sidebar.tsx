@@ -208,6 +208,31 @@ export function MobileSheetSidebar({ links }: DashboardSidebarProps) {
   const [open, setOpen] = useState(false);
   const { isSm, isMobile } = useMediaQuery();
 
+  const [ordersCount, setOrdersCount] = useState(0);
+  const [productsCount, setProductsCount] = useState(0);
+  const [reviewsCount, setReviewsCount] = useState(0);
+
+  const countOrdersAction = async () => {
+    const res = await countOrders();
+    if (res) setOrdersCount(res);
+  };
+
+  const countProductsAction = async () => {
+    const res = await countProducts();
+    if (res) setProductsCount(res);
+  };
+
+  const getReviewsCount = async () => {
+    const res = await countReviews();
+    if (res) setReviewsCount(res);
+  };
+
+  useEffect(() => {
+    countOrdersAction();
+    countProductsAction();
+    getReviewsCount();
+  }, []);
+
   if (isSm || isMobile) {
     return (
       <Sheet open={open} onOpenChange={setOpen}>
@@ -274,9 +299,19 @@ export function MobileSheetSidebar({ links }: DashboardSidebarProps) {
                             >
                               <Icon className="size-5" />
                               {item.title}
-                              {item.badge && (
+                              {item.badge === "orders" && (
                                 <Badge className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full">
-                                  {item.badge}
+                                  {ordersCount}
+                                </Badge>
+                              )}
+                              {item.badge === "products" && (
+                                <Badge className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full">
+                                  {productsCount}
+                                </Badge>
+                              )}
+                              {item.badge === "reviews" && (
+                                <Badge className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full">
+                                  {reviewsCount}
                                 </Badge>
                               )}
                             </Link>
