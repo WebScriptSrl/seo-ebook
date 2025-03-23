@@ -139,10 +139,10 @@ const NewsletterSubscriptionEmail = ({
           >
             <Img
               src={`${baseUrl}/static/seo-ebook-logo.png`}
-              width="100%"
+              width="220"
               height="48"
               alt="SeoEbook logo"
-              className="my-8 object-contain"
+              className="my-8 object-cover"
             />
           </Link>
           <Text className="text-base">
