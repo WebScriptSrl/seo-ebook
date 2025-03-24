@@ -56,6 +56,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
+              aria-label="WebScript website"
             >
               WebScript
             </Link>{" "}
@@ -76,6 +77,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
+              aria-label="SEO.eBook Twitter account"
             >
               <Icons.twitter className="size-5" />
             </Link>
@@ -88,6 +90,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
                 setShowCookiesPreferencesModal(true);
               }}
               className="size-8 px-0"
+              aria-label="Manage cookies preferences"
             >
               <Icons.settings className="size-5" />
             </Button>
