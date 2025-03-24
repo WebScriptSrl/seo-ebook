@@ -472,15 +472,16 @@ export default function BentoGrid() {
                 <div className="relative flex h-full flex-col justify-center space-y-6 py-6">
                   <Link
                     href="/pricing"
-                    className="relative flex w-[calc(50%+0.875rem)] items-center justify-end gap-2 hover:scale-125"
+                    className="relative flex w-[calc(50%+1.75rem)] items-center justify-end gap-2 hover:scale-125"
                   >
                     <span className="block h-fit rounded-md border bg-muted/50 px-2 py-1 text-xs">
-                      EBook
+                      eBook
                     </span>
-                    <div className="size-7 ring-4 ring-background">
+                    <div className="h-10 w-14 rounded-lg ring-4 ring-background">
                       <Image
-                        width={100}
-                        height={100}
+                        width={0}
+                        height={0}
+                        sizes="100%"
                         className="size-full rounded-full border"
                         src="/_static/product/mastering-seo-guide-on-tablet-and-phone.avif"
                         alt="Mastering Local SEO guide ebook on tablet and phone"
@@ -491,12 +492,13 @@ export default function BentoGrid() {
                     href={siteConfig.links.amzKindle}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative ml-[calc(50%-1rem)] flex items-center gap-2 hover:scale-125"
+                    className="relative ml-[calc(50%-1.75rem)] flex items-center gap-2 hover:scale-125"
                   >
-                    <div className="size-8 ring-4 ring-background">
+                    <div className="h-10 w-14 rounded-lg ring-4 ring-background">
                       <Image
-                        width={100}
-                        height={100}
+                        width={0}
+                        height={0}
+                        sizes="100%"
                         className="size-full rounded-full border"
                         src="/_static/product/mastering-seo-book-kindle-edition.avif"
                         alt="Mastering Local SEO guide ebook on Kindle"
@@ -510,15 +512,16 @@ export default function BentoGrid() {
                     href={siteConfig.links.amzPaperback}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative flex w-[calc(50%+0.875rem)] items-center justify-end gap-2 hover:scale-125"
+                    className="relative flex w-[calc(50%+1.75rem)] items-center justify-end gap-2 hover:scale-125"
                   >
                     <span className="block h-fit rounded-md border bg-muted/50 px-2 py-1 text-xs">
                       Paperback
                     </span>
-                    <div className="size-7 ring-4 ring-background">
+                    <div className="h-10 w-14 rounded-lg ring-4 ring-background">
                       <Image
-                        width={100}
-                        height={100}
+                        width={0}
+                        height={0}
+                        sizes="100%"
                         className="size-full rounded-full border"
                         src="/_static/product/mastering-local-seo-book-paperback-main.avif"
                         alt="Mastering Local SEO guide paperback book"
@@ -529,12 +532,13 @@ export default function BentoGrid() {
                     href={siteConfig.links.amzHardcover}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative ml-[calc(50%-1rem)] flex items-center gap-2 hover:scale-125"
+                    className="relative ml-[calc(50%-1.75rem)] flex items-center gap-2 hover:scale-125"
                   >
-                    <div className="size-8 ring-4 ring-background">
+                    <div className="h-10 w-14 rounded-lg ring-4 ring-background">
                       <Image
-                        width={100}
-                        height={100}
+                        width={0}
+                        height={0}
+                        sizes="100%"
                         className="size-full rounded-full border"
                         src="/_static/product/mastering-local-seo-hardcover-book-main.avif"
                         alt="Mastering Local SEO guide hardcover book"
