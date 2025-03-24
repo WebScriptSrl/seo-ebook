@@ -45,6 +45,8 @@ export function NavMobile() {
           "fixed right-2 top-2.5 z-50 rounded-full p-2 transition-colors duration-200 hover:bg-muted focus:outline-none active:bg-muted md:hidden",
           open && "hover:bg-muted active:bg-muted",
         )}
+        name="Mobile navigation"
+        aria-label="Mobile navigation"
       >
         {open ? (
           <X className="size-6 text-muted-foreground" />

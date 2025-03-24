@@ -106,12 +106,12 @@ export function ProductPricingCards({
             alt={offer.title}
             blurDataURL={placeholderBlurhash}
             src={offer.image}
-            width={300}
-            height={300}
+            width={0}
+            height={0}
             className="w-full object-cover object-center"
             placeholder="blur"
             priority
-            sizes="(max-width: 768px) 750px, 600px"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         )}
 

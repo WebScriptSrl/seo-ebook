@@ -35,12 +35,12 @@ export function BlogCard({
               "size-full object-cover object-center",
               horizontale ? "lg:h-72" : null,
             )}
-            width={800}
-            height={400}
+            width={0}
+            height={0}
             priority={priority}
             placeholder="blur"
             src={data.image}
-            sizes="(max-width: 768px) 750px, 600px"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         </div>
       )}

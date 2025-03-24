@@ -43,7 +43,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <ConsentProvider>
               <ModalProvider>{children}</ModalProvider>
             </ConsentProvider>
-            <Analytics />
+            {/* We are using Google Analytics - Uncomment to use both */}
+            {/* <Analytics /> */}
             <TailwindIndicator />
             <Toaster richColors closeButton />
           </ThemeProvider>
