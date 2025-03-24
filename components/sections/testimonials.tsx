@@ -55,8 +55,8 @@ export default async function Testimonials() {
         </div>
 
         <div className="column-1 gap-5 space-y-5 md:columns-2">
-          {reviews.map((item) => (
-            <div className="break-inside-avoid" key={item.name}>
+          {reviews.map((item, i) => (
+            <div className="break-inside-avoid" key={item.name + i}>
               <div className="relative rounded-xl border bg-muted/25">
                 <div className="flex flex-col px-4 py-5 sm:p-6">
                   <div>

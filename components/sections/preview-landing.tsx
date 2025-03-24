@@ -14,10 +14,11 @@ export default function PreviewLanding() {
               alt="Mastering Local SEO Hardcover Book Preview"
               placeholder="blur"
               blurDataURL={placeholderBlurhash}
-              width={2000}
-              height={1000}
+              quality={80}
+              width={0}
+              height={0}
+              sizes="(max-width: 1140px) 100vw, (max-width: 1920px) 50vw, 33vw"
               priority
-              loading="eager"
             />
           </div>
         </div>
