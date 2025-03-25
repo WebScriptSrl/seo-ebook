@@ -5,7 +5,9 @@ import { getCurrentUser } from "@/lib/session";
 import { constructMetadata } from "@/lib/utils";
 import { DashboardHeader } from "@/components/dashboard/header";
 import InfoCard from "@/components/dashboard/info-card";
+import SubscribersList from "@/components/dashboard/newsletter-list";
 import TransactionsList from "@/components/dashboard/transactions-list";
+import UserList from "@/components/dashboard/user-list";
 
 export const metadata = constructMetadata({
   title: "Admin – Local SEO eBook",
@@ -50,6 +52,8 @@ export default async function AdminPage() {
           />
         </div>
         <TransactionsList page={0} limit={20} />
+        <UserList page={0} limit={20} />
+        <SubscribersList page={0} limit={20} />
       </div>
     </>
   );
