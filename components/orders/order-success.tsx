@@ -143,11 +143,11 @@ export default function OrderSuccess({ sessionId }: OrderProps) {
         res: { delivered: boolean; sentAt: Date; deliveredAt: Date }[],
       ) => {
         const delivered = res.find((email) => email.delivered === true);
-        const sentDate = res.find((email) => email.sentAt);
+        // const sentDate = res.find((email) => email.sentAt);
         if (delivered) {
           setEmailSent(true);
           setLoading(false);
-          return `Order details were sent ${sentDate?.sentAt ? `on ${new Date(sentDate.sentAt).toLocaleString()} to: ${order?.email}` : "!"}`;
+          return `Order details were already sent to ${order?.email} !`;
         }
         setEmailSent(false);
         return "We are sending your order details by email...";

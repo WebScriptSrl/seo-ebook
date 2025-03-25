@@ -100,16 +100,19 @@ export function DashboardNewsletterForm({
 
   useEffect(() => {
     if (cookieValid) {
+      setUnsubscribed(false);
       setSubscribed("CONFIRMED");
       return;
     }
 
     if (subscriptionData && subscriptionData.data.subscribed === "CONFIRMED") {
+      setUnsubscribed(false);
       setSubscribed("CONFIRMED");
       return;
     }
 
     if (subscriptionData && subscriptionData.data.subscribed === "PENDING") {
+      setUnsubscribed(false);
       setSubscribed("PENDING");
       return;
     }
@@ -124,7 +127,8 @@ export function DashboardNewsletterForm({
     }
 
     setSubscribed("NEW");
-  }, [cookieValid, subscriptionData]);
+    setUnsubscribed(true);
+  }, [cookieValid, subscriptionData, unsubscribed]);
 
   useEffect(() => {
     if (sendConfirmationEmail) {
@@ -155,7 +159,6 @@ export function DashboardNewsletterForm({
     toast.promise(promise, {
       loading: "Adding your email...",
       success: (res: any) => {
-        console.log(res);
         if (res.message === "Email already subscribed") {
           setSubscribed("CONFIRMED");
           throw new Error(`${res.message}`);
@@ -215,6 +218,50 @@ export function DashboardNewsletterForm({
     <Suspense
       fallback={<Skeleton className="hidden h-16 w-28 rounded-full lg:flex" />}
     >
+      {unsubscribed && (
+        <SectionColumns
+          title="Newsletter subscription"
+          description="
+    Subscribe to our newsletter to receive the latest news and updates."
+        >
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex w-full flex-col space-y-5 sm:max-w-sm"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{`${"Subscribe to our newsletter"}`}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        className="rounded-full px-4"
+                        placeholder={`${"johndoe@example.com"}`}
+                        disabled={submitting}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                size="sm"
+                rounded="full"
+                className="min-w-40 max-w-40 self-center px-4 sm:self-end"
+              >
+                Subscribe
+              </Button>
+            </form>
+          </Form>
+        </SectionColumns>
+      )}
+
       {subscribed === "NEW" ||
         (subscribed === "UNSUBSCRIBED" && (
           <SectionColumns
