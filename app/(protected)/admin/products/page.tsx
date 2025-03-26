@@ -3,11 +3,9 @@ import { redirect } from "next/navigation";
 import { countProducts, getGroupedPaginatedProducts } from "@/lib/products";
 import { getCurrentUser } from "@/lib/session";
 import { constructMetadata } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { PaginationWithLinks } from "@/components/layout/link-pagination";
 import { AdminProductsInfo } from "@/components/pricing/product-manager";
-import { EmptyPlaceholder } from "@/components/shared/empty-placeholder";
 
 export const metadata = constructMetadata({
   title: "Admin Products – Local SEO eBook",

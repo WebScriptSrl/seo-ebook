@@ -17,7 +17,7 @@ interface ModalProps {
     | "cookies-settings"
     | "delete-review"
     | "update-review"
-    | "manage-product";
+    | "delete-product";
   children: React.ReactNode;
   className?: string;
   showModal?: boolean;
@@ -68,8 +68,8 @@ export function Modal({
             ? "Delete Review Modal"
             : type === "update-review"
               ? "Update Review Modal"
-              : type === "manage-product"
-                ? "Manage Product Modal"
+              : type === "delete-product"
+                ? "Delete Product Modal"
                 : "Modal";
 
   const modalDescription =
@@ -83,8 +83,8 @@ export function Modal({
             ? "Permanently delete reviews modal"
             : type === "update-review"
               ? "Update your review modal"
-              : type === "manage-product"
-                ? "Manage your product modal"
+              : type === "delete-product"
+                ? "Delete products modal"
                 : "Modal";
 
   if (isMobile && !desktopOnly) {

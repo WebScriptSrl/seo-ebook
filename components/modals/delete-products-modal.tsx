@@ -49,7 +49,7 @@ function DeleteProductModal({
 
   return (
     <Modal
-      type="delete-review"
+      type="delete-product"
       showModal={showDeleteProductModal}
       setShowModal={setShowDeleteProductModal}
       className="gap-0"
