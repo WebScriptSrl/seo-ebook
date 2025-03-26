@@ -90,7 +90,7 @@ export default async function PostPage({
   const jsonLd: WithContext<BlogPosting> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    url: `${baseUrl}/blog/${post.slug}`,
+    url: `${baseUrl}/blog${post.slug}`,
     headline: post.title,
     description: post.description,
     image: post.image,
