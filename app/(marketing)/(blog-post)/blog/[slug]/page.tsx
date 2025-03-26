@@ -7,6 +7,7 @@ import "@/styles/mdx.css";
 
 import { Metadata } from "next";
 import Link from "next/link";
+import { BlogPosting, WithContext } from "schema-dts";
 
 import { BLOG_CATEGORIES } from "@/config/blog";
 import { getTableOfContents } from "@/lib/toc";
@@ -84,9 +85,40 @@ export default async function PostPage({
     ),
   ]);
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  const jsonLd: WithContext<BlogPosting> = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    url: `${baseUrl}/blog/${post.slug}`,
+    headline: post.title,
+    description: post.description,
+    image: post.image,
+    author: post.authors.map((author) => ({
+      "@type": "Person",
+      name: author,
+    })),
+    datePublished: post.date,
+    dateModified: post.updated,
+    publisher: {
+      "@type": "Organization",
+      name: "SEO.eBook",
+    },
+    isPartOf: {
+      "@type": "Blog",
+      "@id": `${baseUrl}/blog`,
+      name: "Local SEO.eBook Blog",
+    },
+    wordCount: post.body.code.split(" ").length,
+  };
+
   return (
     <>
       <MaxWidthWrapper className="pt-6 md:pt-10">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <div className="flex flex-col space-y-4">
           <div className="flex items-center space-x-4">
             <Link

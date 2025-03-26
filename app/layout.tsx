@@ -7,7 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { IS_GTM_ENABLED } from "@/config/tracking";
 import { cn, constructMetadata } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from "@/components/analytics";
+// import { Analytics } from "@/components/analytics";
 import { GoogleTagManager } from "@/components/gt-manager";
 import ConsentProvider from "@/components/modals/consent-provider";
 import ModalProvider from "@/components/modals/providers";
