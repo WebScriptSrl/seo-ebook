@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { UserReview } from "@/types";
 import { ReviewState } from "@prisma/client";
 
 import { siteConfig } from "@/config/site";

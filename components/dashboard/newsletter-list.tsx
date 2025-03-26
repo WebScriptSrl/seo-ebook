@@ -55,7 +55,9 @@ export default async function SubscribersList({
                 <TableRow>
                   <TableHead>Subscriber</TableHead>
                   <TableHead className="hidden sm:table-cell">Status</TableHead>
-                  <TableHead className="hidden xl:table-cell">User</TableHead>
+                  <TableHead className="hidden xl:table-cell">
+                    Renew Date
+                  </TableHead>
                   <TableHead className="hidden md:table-cell xl:table-cell">
                     Date
                   </TableHead>
@@ -69,7 +71,7 @@ export default async function SubscribersList({
                       <TableCell>
                         <div className="font-medium">{subscriber.email}</div>
                         <div className="hidden text-sm text-muted-foreground md:inline">
-                          {subscriber.userName}
+                          {subscriber.confirmedAt?.toLocaleString()}
                         </div>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
@@ -77,7 +79,9 @@ export default async function SubscribersList({
                       </TableCell>
                       <TableCell className="hidden xl:table-cell">
                         <Badge className="text-xs" variant="outline">
-                          {subscriber.userName}
+                          {subscriber.renewed
+                            ? subscriber.renewedAt?.toLocaleString()
+                            : "Not Renewed"}
                         </Badge>
                       </TableCell>
                       <TableCell className="hidden md:table-cell xl:table-cell">

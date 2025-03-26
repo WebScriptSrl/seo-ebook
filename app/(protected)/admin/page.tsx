@@ -51,9 +51,9 @@ export default async function AdminPage() {
             totalOrders={ordersInfo?.allTime}
           />
         </div>
-        <TransactionsList page={0} limit={20} />
-        <UserList page={0} limit={20} />
-        <SubscribersList page={0} limit={20} />
+        <TransactionsList page={1} limit={20} />
+        <UserList page={1} limit={20} />
+        <SubscribersList page={1} limit={20} />
       </div>
     </>
   );

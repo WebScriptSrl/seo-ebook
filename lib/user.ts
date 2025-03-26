@@ -29,10 +29,11 @@ export const getUserById = async (id: string) => {
 };
 
 export const getPaginatedUsers = async (page: number, limit: number) => {
+  const pageNumber = page - 1; // 0-indexed
   try {
     const users = await prisma.user.findMany({
       take: limit,
-      skip: page * limit,
+      skip: pageNumber * limit,
       orderBy: {
         createdAt: "desc",
       },

@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/db";
 
 export const getPaginatedsubscribers = async (page: number, limit: number) => {
+  const pageNumber = page - 1; // 0-indexed
   try {
     const subscribers = await prisma.newsletterSubscription.findMany({
       take: limit,
-      skip: page * limit,
+      skip: pageNumber * limit,
       orderBy: {
         createdAt: "desc",
       },
@@ -12,12 +13,10 @@ export const getPaginatedsubscribers = async (page: number, limit: number) => {
         id: true,
         email: true,
         createdAt: true,
+        renewed: true,
+        renewedAt: true,
+        confirmedAt: true,
         subscribed: true,
-        user: {
-          select: {
-            name: true,
-          },
-        },
         unsubscribed: true,
         unsubscribedAt: true,
       },
@@ -31,10 +30,10 @@ export const getPaginatedsubscribers = async (page: number, limit: number) => {
       const id = subscriber.id;
       const email = subscriber.email;
       const date = subscriber.createdAt;
+      const renewed = subscriber.renewed;
+      const renewedAt = subscriber.renewedAt;
+      const confirmedAt = subscriber.confirmedAt;
       const subscribed = subscriber.subscribed;
-      const userName = subscriber.user?.name
-        ? subscriber.user?.name
-        : "Not a user";
       const unsubscribed = subscriber.unsubscribed;
       const unsubscribedAt = subscriber.unsubscribedAt;
 
@@ -42,8 +41,10 @@ export const getPaginatedsubscribers = async (page: number, limit: number) => {
         id,
         email,
         date,
+        renewed,
+        renewedAt,
+        confirmedAt,
         subscribed,
-        userName,
         unsubscribed,
         unsubscribedAt,
       };

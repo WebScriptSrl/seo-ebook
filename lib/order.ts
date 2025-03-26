@@ -213,10 +213,11 @@ export const getGroupedPaidOrders = async () => {
 };
 
 export const getPaginatedTransactions = async (page: number, limit: number) => {
+  const pageNumber = page - 1; // 0-indexed
   try {
     const orders = await prisma.order.findMany({
       take: limit,
-      skip: page * limit,
+      skip: pageNumber * limit,
       orderBy: {
         createdAt: "desc",
       },

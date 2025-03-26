@@ -5,7 +5,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { deleteReviews } from "@/actions/delete-reviews";
+import { deleteProducts } from "@/actions/delete-products";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
@@ -15,34 +15,34 @@ import { UserAvatar } from "@/components/shared/user-avatar";
 
 import { Checkbox } from "../ui/checkbox";
 
-function DeleteReviewModal({
-  reviewsIds,
-  setReviewsIds,
+function DeleteProductModal({
+  productsIds,
+  setProductsIds,
   path,
   setPath,
-  showDeleteReviewModal,
-  setShowDeleteReviewModal,
+  showDeleteProductModal,
+  setShowDeleteProductModal,
 }: {
-  reviewsIds: string[];
-  setReviewsIds: Dispatch<SetStateAction<string[]>>;
+  productsIds: string[];
+  setProductsIds: Dispatch<SetStateAction<string[]>>;
   path: string;
   setPath: Dispatch<SetStateAction<string>>;
-  showDeleteReviewModal: boolean;
-  setShowDeleteReviewModal: Dispatch<SetStateAction<boolean>>;
+  showDeleteProductModal: boolean;
+  setShowDeleteProductModal: Dispatch<SetStateAction<boolean>>;
 }) {
   const { data: session } = useSession();
   const [deleting, setDeleting] = useState(false);
 
-  async function deleteUserReviews() {
+  async function deleteProductsAction() {
     setDeleting(true);
-    const { status, message } = await deleteReviews(reviewsIds, path);
+    const { status, message } = await deleteProducts(productsIds, path);
 
     if (status === "error") {
       setDeleting(false);
       throw message;
     } else {
-      setShowDeleteReviewModal(false);
-      setReviewsIds([]);
+      setShowDeleteProductModal(false);
+      setProductsIds([]);
       setDeleting(false);
     }
   }
@@ -50,8 +50,8 @@ function DeleteReviewModal({
   return (
     <Modal
       type="delete-review"
-      showModal={showDeleteReviewModal}
-      setShowModal={setShowDeleteReviewModal}
+      showModal={showDeleteProductModal}
+      setShowModal={setShowDeleteProductModal}
       className="gap-0"
     >
       <div className="flex flex-col items-center justify-center space-y-3 border-b p-4 pt-8 sm:px-16">
@@ -62,23 +62,23 @@ function DeleteReviewModal({
           }}
         />
         <h3 className="text-lg font-semibold">
-          Delete {reviewsIds.length === 1 ? "Review" : "Reviews"}
+          Delete {productsIds.length === 1 ? "Product" : "Products"}
         </h3>
         <p className="text-center text-sm text-muted-foreground">
           <b>Warning:</b> This will permanently delete your{" "}
-          {reviewsIds.length === 1 ? "review" : "reviews"} from your account.
+          {productsIds.length === 1 ? "product" : "products"} from your account.
         </p>
       </div>
 
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          toast.promise(deleteUserReviews(), {
+          toast.promise(deleteProductsAction(), {
             loading: `Deleting ${
-              reviewsIds.length === 1 ? "review" : "reviews"
+              productsIds.length === 1 ? "product" : "products"
             }...`,
             success: `${
-              reviewsIds.length === 1 ? "Review" : "Reviews"
+              productsIds.length === 1 ? "Product" : "Products"
             } deleted successfully!`,
             error: (err) => err,
           });
@@ -95,7 +95,7 @@ function DeleteReviewModal({
           <label htmlFor="verification" className="block text-sm">
             Check here,{" "}
             <span className="font-semibold text-black dark:text-white">
-              to confirm {reviewsIds.length === 1 ? "review" : "reviews"}{" "}
+              to confirm {productsIds.length === 1 ? "product" : "products"}{" "}
               removal
             </span>{" "}
           </label>
@@ -113,45 +113,45 @@ function DeleteReviewModal({
   );
 }
 
-export function useDeleteReviewModal() {
-  const [showDeleteReviewModal, setShowDeleteReviewModal] = useState(false);
-  const [reviewsIds, setReviewsIds] = useState<string[]>([]);
+export function useDeleteProductModal() {
+  const [showDeleteProductModal, setShowDeleteProductModal] = useState(false);
+  const [productsIds, setProductsIds] = useState<string[]>([]);
   const [path, setPath] = useState<string>("");
 
-  const DeleteReviewModalCallback = useCallback(() => {
+  const DeleteProductModalCallback = useCallback(() => {
     return (
-      <DeleteReviewModal
-        reviewsIds={reviewsIds}
-        setReviewsIds={setReviewsIds}
+      <DeleteProductModal
+        productsIds={productsIds}
+        setProductsIds={setProductsIds}
         path={path}
         setPath={setPath}
-        showDeleteReviewModal={showDeleteReviewModal}
-        setShowDeleteReviewModal={setShowDeleteReviewModal}
+        showDeleteProductModal={showDeleteProductModal}
+        setShowDeleteProductModal={setShowDeleteProductModal}
       />
     );
   }, [
-    showDeleteReviewModal,
-    setShowDeleteReviewModal,
-    reviewsIds,
-    setReviewsIds,
+    productsIds,
+    setProductsIds,
     path,
     setPath,
+    showDeleteProductModal,
+    setShowDeleteProductModal,
   ]);
 
   return useMemo(
     () => ({
-      reviewsIds,
-      setReviewsIds,
+      productsIds,
+      setProductsIds,
       path,
       setPath,
-      setShowDeleteReviewModal,
-      DeleteReviewModal: DeleteReviewModalCallback,
+      setShowDeleteProductModal,
+      DeleteProductModal: DeleteProductModalCallback,
     }),
     [
-      setReviewsIds,
-      setShowDeleteReviewModal,
-      DeleteReviewModalCallback,
-      reviewsIds,
+      setProductsIds,
+      setShowDeleteProductModal,
+      DeleteProductModalCallback,
+      productsIds,
       path,
     ],
   );
